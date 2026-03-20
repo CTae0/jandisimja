@@ -879,12 +879,18 @@ async function doPlant(){
     });
 
     if(!response.ok){
-      const err = await response.json();
-      if(err.error === 'ALREADY_PLANTED'){
-        alert('이미 잔디를 심으셨습니다! 1인 1회만 참여 가능합니다.');
-        selectedSchoolId=null; return;
+      let errMsg = '서버 오류';
+      try {
+        const err = await response.json();
+        if(err.error === 'ALREADY_PLANTED'){
+          alert('이미 잔디를 심으셨습니다! 1인 1회만 참여 가능합니다.');
+          selectedSchoolId=null; return;
+        }
+        errMsg = err.error || errMsg;
+      } catch(_) {
+        errMsg = `HTTP ${response.status}`;
       }
-      throw new Error(err.error || '서버 오류');
+      throw new Error(errMsg);
     }
 
   } catch(err) {

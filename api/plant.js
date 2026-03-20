@@ -16,6 +16,9 @@ import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 
 function getDb() {
   if (!getApps().length) {
+    if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
+      throw new Error('FIREBASE_SERVICE_ACCOUNT 환경변수가 설정되지 않았습니다.');
+    }
     const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
     initializeApp({ credential: cert(serviceAccount) });
   }
