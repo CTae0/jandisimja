@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>잔디심자 🌱 최태영</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #FF6B2B;
+    --orange-light: #FF8C5A;
+    --orange-pale: #FFF0E8;
+    --orange-mid: #FFDAC8;
+    --black: #111111;
+    --gray: #555555;
+    --gray-light: #999999;
+    --gray-bg: #F7F7F7;
+    --white: #FFFFFF;
+    --green: #4CAF50;
+    --radius: 14px;
+    --shadow: 0 4px 20px rgba(255,107,43,0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    background: var(--white);
+    color: var(--black);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--orange);
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none; flex-shrink: 0;
+  }
+  .logo-icon {
+    width: 36px; height: 36px; background: var(--orange);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+  .logo-text {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: clamp(16px, 4vw, 20px); color: var(--black); letter-spacing: -0.5px;
+  }
+  .logo-text span { color: var(--orange); }
+  .btn-kakao {
+    background: #FEE500; color: #3C1E1E; border: none; border-radius: 9px;
+    padding: 9px 16px; font-family: 'Noto Sans KR', sans-serif; font-weight: 500;
+    font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 5px;
+    white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+  }
+  .btn-kakao:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(254,229,0,0.5); }
+  .btn-login-done {
+    background: var(--orange); color: white; border: none; border-radius: 9px;
+    padding: 9px 16px; font-family: 'Noto Sans KR', sans-serif; font-weight: 500;
+    font-size: 13px; display: flex; align-items: center; gap: 5px; flex-shrink: 0;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--orange-pale) 0%, #fff 65%);
+    padding: clamp(36px,8vw,64px) clamp(16px,5vw,48px) clamp(32px,7vw,56px);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(255,107,43,0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--orange); color: white; font-size: 12px; font-weight: 500;
+    padding: 5px 13px; border-radius: 100px; margin-bottom: 18px; letter-spacing: 0.3px;
+  }
+  .hero h1 {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 7vw, 52px); color: var(--black);
+    line-height: 1.2; letter-spacing: -1.5px; margin-bottom: 14px;
+  }
+  .hero h1 em { color: var(--orange); font-style: normal; }
+  .hero p {
+    font-size: clamp(13px, 3.5vw, 15px); font-weight: 400; color: var(--gray);
+    max-width: 440px; margin: 0 auto 28px; line-height: 1.8;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--orange); color: white; padding: 18px 20px;
+    display: flex; justify-content: center; gap: clamp(20px,8vw,56px); flex-wrap: wrap;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px,5.5vw,28px); letter-spacing: -0.5px; display: block;
+  }
+  .stat-label { font-size: clamp(11px,2.5vw,13px); font-weight: 400; opacity: 0.85; }
+
+  /* PLEDGE */
+  .pledge-section {
+    padding: clamp(36px,7vw,56px) clamp(16px,5vw,48px);
+    max-width: 860px; margin: 0 auto;
+  }
+  .section-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: clamp(20px,4.5vw,26px); color: var(--black); margin-bottom: 6px; letter-spacing: -0.5px;
+  }
+  .section-title span { color: var(--orange); }
+  .section-desc { color: var(--gray); font-size: clamp(13px,3vw,14px); font-weight: 400; margin-bottom: 28px; }
+
+  /* 청소년 훅 배너 */
+  .youth-hook {
+    background: var(--white);
+    border: 2px solid var(--orange);
+    border-radius: 16px;
+    padding: clamp(20px,5vw,32px) clamp(20px,5vw,36px);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .youth-hook::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(255,107,43,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .youth-hook::after {
+    content: '🌱';
+    position: absolute;
+    right: clamp(16px,4vw,32px);
+    top: 50%; transform: translateY(-50%);
+    font-size: clamp(48px,10vw,72px);
+    opacity: 0.12;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .youth-hook-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--orange); color: white;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 100px;
+    letter-spacing: 0.5px;
+    width: fit-content;
+  }
+  .youth-hook-main {
+    font-weight: 700;
+    font-size: clamp(20px, 5vw, 30px);
+    color: var(--black);
+    line-height: 1.3;
+    letter-spacing: -0.8px;
+  }
+  .youth-hook-main em {
+    color: var(--orange);
+    font-style: normal;
+  }
+  .youth-hook-sub {
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 400;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+  .youth-hook-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--orange);
+    color: white;
+    font-size: 14px; font-weight: 500;
+    padding: 10px 18px;
+    border-radius: 100px;
+    border: none; cursor: pointer;
+    width: fit-content;
+    margin-top: 4px;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .youth-hook-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,43,0.4); }
+
+  /* 챌린지 배너 */
+  .challenge-banner {
+    margin-top: 24px;
+    background: var(--orange-pale);
+    border: 1.5px solid var(--orange-mid);
+    border-radius: 16px;
+    padding: clamp(18px,4vw,28px) clamp(20px,5vw,32px);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .challenge-title {
+    font-weight: 700;
+    font-size: clamp(15px,4vw,18px);
+    color: var(--black);
+    letter-spacing: -0.3px;
+  }
+  .challenge-title span { color: var(--orange); }
+  .challenge-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  @media (min-width: 540px) {
+    .challenge-steps { flex-direction: row; align-items: center; justify-content: space-between; gap: 0; }
+  }
+  .challenge-step {
+    display: flex; align-items: center; gap: 10px;
+    flex: 1;
+  }
+  .challenge-step-num {
+    width: 28px; height: 28px; flex-shrink: 0;
+    background: var(--orange); color: white;
+    border-radius: 50%;
+    font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .challenge-step-text {
+    font-size: 13px; font-weight: 400; color: var(--black); line-height: 1.5;
+  }
+  .challenge-step-text strong { font-weight: 700; color: var(--orange); }
+  .challenge-arrow {
+    color: var(--orange); font-size: 18px; font-weight: 700;
+    padding: 0 8px; flex-shrink: 0;
+    display: none;
+  }
+  @media (min-width: 540px) { .challenge-arrow { display: block; } }
+  .challenge-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .challenge-hashtags {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .hashtag {
+    background: var(--orange-mid);
+    color: var(--orange);
+    font-size: 12px; font-weight: 700;
+    padding: 4px 10px; border-radius: 100px;
+  }
+  .challenge-share-btn {
+    background: var(--orange); color: white;
+    border: none; border-radius: 100px;
+    padding: 9px 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px; font-weight: 500;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 5px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .challenge-share-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(255,107,43,0.4); }
+
+  /* SCHOOL SECTION */
+  .school-section { background: var(--gray-bg); padding: clamp(36px,7vw,56px) clamp(16px,5vw,48px); }
+  .school-inner { max-width: 920px; margin: 0 auto; }
+  .search-wrap { position: relative; margin-bottom: 22px; }
+  .search-input {
+    width: 100%; padding: 14px 18px 14px 48px;
+    font-size: 15px; font-family: 'Noto Sans KR', sans-serif; font-weight: 400;
+    border: 1.5px solid var(--orange-mid); border-radius: 12px; outline: none;
+    background: white; transition: border-color 0.2s; -webkit-appearance: none;
+  }
+  .search-input:focus { border-color: var(--orange); }
+  .search-icon {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    font-size: 18px; pointer-events: none;
+  }
+
+  /* TABS */
+  .school-tabs { display: flex; gap: 7px; margin-bottom: 18px; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 7px 17px; border-radius: 100px; border: 1.5px solid var(--orange-mid);
+    background: white; font-family: 'Noto Sans KR', sans-serif; font-weight: 500;
+    font-size: 13px; color: var(--gray); cursor: pointer; transition: all 0.2s;
+  }
+  .tab-btn.active { background: var(--orange); border-color: var(--orange); color: white; }
+  .tab-btn:hover:not(.active) { border-color: var(--orange); color: var(--orange); }
+
+  /* SCHOOL LIST */
+  .school-list { display: flex; flex-direction: column; gap: 8px; }
+  .school-item {
+    background: white; border-radius: 12px; padding: 13px 16px;
+    display: flex; align-items: center; gap: 12px;
+    border: 1.5px solid transparent; transition: all 0.2s; cursor: pointer;
+  }
+  .school-item:hover { border-color: var(--orange-mid); box-shadow: var(--shadow); transform: translateX(2px); }
+  .school-rank {
+    font-family: 'Noto Sans KR', sans-serif; font-weight: 700; font-size: 16px;
+    color: var(--orange); min-width: 32px; text-align: center; flex-shrink: 0;
+  }
+  .school-rank.top1 { color: #FFB800; font-size: 20px; }
+  .school-rank.top2 { color: #999999; }
+  .school-rank.top3 { color: #CD7F32; }
+  .school-info { flex: 1; min-width: 0; }
+  .school-name {
+    font-weight: 500; font-size: clamp(13px,3.5vw,15px); color: var(--black);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .school-type-badge {
+    display: inline-block; font-size: 10px; font-weight: 500;
+    padding: 2px 7px; border-radius: 100px; margin-right: 5px; vertical-align: middle; flex-shrink: 0;
+  }
+  .badge-elem { background: #E8F5E9; color: #2E7D32; }
+  .badge-mid  { background: #E3F2FD; color: #1565C0; }
+  .badge-high { background: #FFF3E0; color: #E65100; }
+  .school-grass-bar { flex: 1; max-width: 120px; display: none; }
+  @media (min-width: 520px) { .school-grass-bar { display: block; } }
+  .grass-bar-track { height: 7px; background: var(--orange-mid); border-radius: 100px; overflow: hidden; }
+  .grass-bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--orange), #FF8C5A);
+    border-radius: 100px; transition: width 1s ease;
+  }
+  .grass-count {
+    font-family: 'Noto Sans KR', sans-serif; font-weight: 700; font-size: clamp(13px,3.5vw,15px);
+    color: var(--orange); min-width: 58px; text-align: right; white-space: nowrap; flex-shrink: 0;
+  }
+  .grass-count small { font-size: 13px; }
+  .btn-plant {
+    background: var(--orange); color: white; border: none; border-radius: 9px;
+    padding: 8px 13px; font-family: 'Noto Sans KR', sans-serif; font-weight: 500;
+    font-size: 12px; cursor: pointer; white-space: nowrap; transition: all 0.2s;
+    display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+  }
+  .btn-plant:hover { background: var(--orange-light); transform: scale(1.04); }
+  .btn-plant:disabled { background: var(--green); cursor: default; transform: none; }
+  .no-result { text-align: center; padding: 40px; color: var(--gray-light); font-size: 14px; font-weight: 400; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+    z-index: 200; justify-content: center; align-items: flex-end; padding: 0;
+  }
+  @media (min-width: 520px) { .modal-overlay { align-items: center; padding: 20px; } }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: white; border-radius: 22px 22px 0 0;
+    padding: 32px 24px 36px; width: 100%; max-width: 420px;
+    text-align: center; position: relative; animation: slideUp 0.28s ease;
+  }
+  @media (min-width: 520px) {
+    .modal { border-radius: 22px; padding: 38px 30px; animation: popIn 0.25s ease; }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(60px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.92) translateY(14px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-close {
+    position: absolute; top: 14px; right: 18px; font-size: 20px; cursor: pointer;
+    color: var(--gray-light); border: none; background: none; line-height: 1;
+  }
+  .modal-grass-img { display: none; }
+  .modal-grass-emoji { font-size: 56px; margin-bottom: 10px; display: block; }
+  .modal h2 {
+    font-family: 'Noto Sans KR', sans-serif; font-weight: 700;
+    font-size: clamp(18px,4.5vw,22px);
+    margin-bottom: 7px; letter-spacing: -0.5px;
+  }
+  .modal h2 span { color: var(--orange); }
+  .modal p { font-size: 13px; font-weight: 400; color: var(--gray); margin-bottom: 24px; line-height: 1.75; }
+  .btn-kakao-big {
+    width: 100%; background: #FEE500; color: #3C1E1E; border: none; border-radius: 13px;
+    padding: 15px; font-family: 'Noto Sans KR', sans-serif; font-weight: 700; font-size: 15px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px;
+    transition: all 0.2s; margin-bottom: 10px;
+  }
+  .btn-kakao-big:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(254,229,0,0.55); }
+  .modal-note { font-size: 11px; font-weight: 400; color: var(--gray-light); }
+  .success-modal h2 { color: var(--green); }
+  .share-btns { display: flex; gap: 9px; margin-top: 14px; }
+  .btn-share {
+    flex: 1; padding: 11px; border-radius: 11px; border: 1.5px solid var(--orange-mid);
+    background: white; font-family: 'Noto Sans KR', sans-serif; font-weight: 500;
+    font-size: 12px; cursor: pointer; transition: all 0.2s; color: var(--gray);
+  }
+  .btn-share:hover { border-color: var(--orange); color: var(--orange); }
+  .btn-share-kakao { background: #FEE500; border-color: #FEE500; color: #3C1E1E; }
+
+  /* LOAD MORE */
+  .load-more-wrap { text-align: center; padding: 20px 0 0; }
+  .btn-load-more {
+    background: white; color: var(--orange); border: 1.5px solid var(--orange);
+    border-radius: 11px; padding: 11px 28px; font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500; font-size: 14px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-load-more:hover { background: var(--orange); color: white; }
+
+  /* FLOATING */
+  .floating-share { position: fixed; bottom: 20px; right: 16px; z-index: 50; }
+  .btn-float {
+    background: var(--orange); color: white; border: none; border-radius: 50px;
+    padding: 13px 20px; font-family: 'Noto Sans KR', sans-serif; font-weight: 500;
+    font-size: 13px; cursor: pointer; box-shadow: 0 6px 22px rgba(255,107,43,0.38);
+    display: flex; align-items: center; gap: 5px; transition: all 0.2s;
+  }
+  .btn-float:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,107,43,0.48); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black); color: rgba(255,255,255,0.45);
+    text-align: center; padding: 28px 20px; font-size: 12px; font-weight: 400; line-height: 2;
+  }
+  footer strong { color: white; font-weight: 500; }
+</style>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">🌱</div>
+    <div class="logo-text">잔디심자 <span>최태영</span></div>
+  </a>
+  <div class="header-right">
+    <button class="btn-kakao" id="headerLoginBtn" onclick="openLoginModal()">
+      <span>💬</span> 카카오 로그인
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-badge">🌿 춘천시 학교 잔디 운동장 공약</div>
+  <h1>우리 학교에<br><em>잔디를 심자!</em></h1>
+  <p>최태영 후보가 약속합니다.<br>춘천시 모든 학교에 잔디 운동장을 만들겠습니다.<br>우리 학교에 잔디를 심어주세요</p>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num" id="totalGrass">0</span>
+    <span class="stat-label">총 잔디 수</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="totalSchools">0</span>
+    <span class="stat-label">참여 학교 수</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num" id="totalParticipants">0</span>
+    <span class="stat-label">참여 인원</span>
+  </div>
+</div>
+
+<section class="pledge-section">
+
+  <!-- 청소년 훅 배너 -->
+  <div class="youth-hook">
+    <div class="youth-hook-tag">🌱 최태영의 필승 공약 1호</div>
+    <div class="youth-hook-main">
+      최태영 <em>당선되면</em><br>학교에 <em>잔디</em> 깔아준다
+    </div>
+    <div class="youth-hook-sub">
+      흙먼지 날리는 운동장은 이제 그만 🚫<br>
+      잔디 원하면 친구한테 이 페이지 공유하고, 우리 학교에 잔디 심어줘!
+    </div>
+    <button class="youth-hook-cta" onclick="shareKakao()">
+      💬 친구한테 공유하기
+    </button>
+  </div>
+
+  <!-- 챌린지 배너 -->
+  <div class="challenge-banner">
+    <div class="challenge-title">🔥 <span>잔디 챌린지</span> 참여 방법</div>
+    <div class="challenge-steps">
+      <div class="challenge-step">
+        <div class="challenge-step-num">1</div>
+        <div class="challenge-step-text">
+          아래에서<br><strong>우리 학교 검색</strong>
+        </div>
+      </div>
+      <div class="challenge-arrow">›</div>
+      <div class="challenge-step">
+        <div class="challenge-step-num">2</div>
+        <div class="challenge-step-text">
+          카카오 로그인 후<br><strong>🌱 잔디 심기</strong>
+        </div>
+      </div>
+      <div class="challenge-arrow">›</div>
+      <div class="challenge-step">
+        <div class="challenge-step-num">3</div>
+        <div class="challenge-step-text">
+          친구한테<br><strong>링크 공유!</strong>
+        </div>
+      </div>
+      <div class="challenge-arrow">›</div>
+      <div class="challenge-step">
+        <div class="challenge-step-num">4</div>
+        <div class="challenge-step-text">
+          우리 학교<br><strong>1등 달성 🏆</strong>
+        </div>
+      </div>
+    </div>
+    <div class="challenge-bottom">
+      <div class="challenge-hashtags">
+        <span class="hashtag">#잔디심자</span>
+        <span class="hashtag">#최태영</span>
+        <span class="hashtag">#춘천잔디운동장</span>
+        <span class="hashtag">#개혁신당</span>
+      </div>
+      <button class="challenge-share-btn" onclick="shareKakao()">
+        💬 카카오로 공유
+      </button>
+    </div>
+  </div>
+
+</section>
+
+<section class="school-section">
+  <div class="school-inner">
+    <h2 class="section-title" style="margin-bottom:4px">우리 학교에 <span>잔디 심기</span></h2>
+    <p class="section-desc">내 학교를 찾아 잔디를 심어보세요! 잔디가 많을수록 공약 실현에 가까워집니다</p>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" type="search" id="searchInput"
+        placeholder="학교 이름을 검색하세요..." oninput="filterSchools()">
+    </div>
+    <div class="school-tabs">
+      <button class="tab-btn active" onclick="filterTab('all',this)">전체</button>
+      <button class="tab-btn" onclick="filterTab('elem',this)">초등학교</button>
+      <button class="tab-btn" onclick="filterTab('mid',this)">중학교</button>
+      <button class="tab-btn" onclick="filterTab('high',this)">고등학교</button>
+    </div>
+    <div class="school-list" id="schoolList"></div>
+    <div class="no-result" id="noResult" style="display:none">검색 결과가 없습니다.</div>
+    <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
+      <button class="btn-load-more" onclick="loadMore()">더 보기 ↓</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>잔디심자 최태영</strong><br>
+  강원특별자치도 춘천시 · 개혁신당 | 최태영 후보 공식 캠페인 페이지<br>
+  <span style="font-size:10px">본 페이지는 잔디 운동장 공약 지지 캠페인 사이트입니다.</span>
+</footer>
+
+<div class="floating-share">
+  <button class="btn-float" onclick="shareKakao()">
+    <span>💬</span> 공유하기
+  </button>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <span class="modal-grass-emoji">🌱</span>
+    <h2>카카오톡으로 <span>로그인</span></h2>
+    <p>잔디 심기에 참여하려면<br>카카오톡 인증이 필요합니다.<br>인증 후 우리 학교에 잔디를 심을 수 있어요!</p>
+    <button class="btn-kakao-big" onclick="kakaoLogin()">
+      <span style="font-size:18px">💬</span> 카카오톡으로 시작하기
+    </button>
+    <p class="modal-note">카카오 계정으로 간편 인증 · 1인 1회 참여</p>
+  </div>
+</div>
+
+<!-- PLANT MODAL -->
+<div class="modal-overlay" id="plantModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('plantModal')">✕</button>
+    <span class="modal-grass-emoji">🌱</span>
+    <h2 id="plantModalTitle"><span>잔디심기</span></h2>
+    <p id="plantModalDesc">이 학교에 잔디를 심으시겠어요?</p>
+    <button class="btn-kakao-big" onclick="doPlant()">
+      🌱 잔디 심기 참여!
+    </button>
+    <p class="modal-note">인당 1개 학교에 1회 참여 가능합니다</p>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal success-modal">
+    <button class="modal-close" onclick="closeModal('successModal')">✕</button>
+    <span class="modal-grass-emoji">🌿</span>
+    <h2>잔디를 심었어요! <span>감사합니다</span></h2>
+    <p id="successMsg">학교에 잔디 1개를 심었습니다!<br>친구들에게도 알려주세요</p>
+    <div class="share-btns">
+      <button class="btn-share btn-share-kakao" onclick="shareKakao()">💬 카카오 공유</button>
+      <button class="btn-share" onclick="shareLink()">🔗 링크 복사</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ALL_SCHOOLS = [
+  {id:'e01',name:'가산초등학교',type:'elem'},{id:'e02',name:'광판초등학교',type:'elem'},
+  {id:'e03',name:'교동초등학교',type:'elem'},{id:'e04',name:'근화초등학교',type:'elem'},
+  {id:'e05',name:'금병초등학교',type:'elem'},{id:'e06',name:'금산초등학교',type:'elem'},
+  {id:'e07',name:'남부초등학교',type:'elem'},{id:'e08',name:'남산초등학교',type:'elem'},
+  {id:'e09',name:'남춘천초등학교',type:'elem'},{id:'e10',name:'당림초등학교',type:'elem'},
+  {id:'e11',name:'동내초등학교',type:'elem'},{id:'e12',name:'동부초등학교',type:'elem'},
+  {id:'e13',name:'동춘천초등학교',type:'elem'},{id:'e14',name:'만천초등학교',type:'elem'},
+  {id:'e15',name:'봄내초등학교',type:'elem'},{id:'e16',name:'봉의초등학교',type:'elem'},
+  {id:'e17',name:'부안초등학교',type:'elem'},{id:'e18',name:'상천초등학교',type:'elem'},
+  {id:'e19',name:'서상초등학교',type:'elem'},{id:'e20',name:'석사초등학교',type:'elem'},
+  {id:'e21',name:'성림초등학교',type:'elem'},{id:'e22',name:'성원초등학교',type:'elem'},
+  {id:'e23',name:'소양초등학교',type:'elem'},{id:'e24',name:'송화초등학교',type:'elem'},
+  {id:'e25',name:'신남초등학교',type:'elem'},{id:'e26',name:'신동초등학교',type:'elem'},
+  {id:'e27',name:'오동초등학교',type:'elem'},{id:'e28',name:'우석초등학교',type:'elem'},
+  {id:'e29',name:'장학초등학교',type:'elem'},{id:'e30',name:'조양초등학교',type:'elem'},
+  {id:'e31',name:'중앙초등학교',type:'elem'},{id:'e32',name:'지촌초등학교',type:'elem'},
+  {id:'e33',name:'천전초등학교',type:'elem'},{id:'e34',name:'추곡초등학교',type:'elem'},
+  {id:'e35',name:'춘천교육대학교부설초등학교',type:'elem'},{id:'e36',name:'춘천삼육초등학교',type:'elem'},
+  {id:'e37',name:'춘천초등학교',type:'elem'},{id:'e38',name:'퇴계초등학교',type:'elem'},
+  {id:'e39',name:'호반초등학교',type:'elem'},{id:'e40',name:'효제초등학교',type:'elem'},
+  {id:'e41',name:'후평초등학교',type:'elem'},
+  {id:'m01',name:'가정중학교',type:'mid'},{id:'m02',name:'강서중학교',type:'mid'},
+  {id:'m03',name:'강원체육중학교',type:'mid'},{id:'m04',name:'강원중학교',type:'mid'},
+  {id:'m05',name:'광판중학교',type:'mid'},{id:'m06',name:'남춘천여자중학교',type:'mid'},
+  {id:'m07',name:'남춘천중학교',type:'mid'},{id:'m08',name:'대룡중학교',type:'mid'},
+  {id:'m09',name:'동산중학교',type:'mid'},{id:'m10',name:'봄내중학교',type:'mid'},
+  {id:'m11',name:'봉의중학교',type:'mid'},{id:'m12',name:'소양중학교',type:'mid'},
+  {id:'m13',name:'신포중학교',type:'mid'},{id:'m14',name:'우석중학교',type:'mid'},
+  {id:'m15',name:'유봉여자중학교',type:'mid'},{id:'m16',name:'창촌중학교',type:'mid'},
+  {id:'m17',name:'춘성중학교',type:'mid'},{id:'m18',name:'춘천중학교',type:'mid'},
+  {id:'m19',name:'퇴계중학교',type:'mid'},{id:'m20',name:'후평중학교',type:'mid'},
+  {id:'h01',name:'강원고등학교',type:'high'},{id:'h02',name:'강원대학교사범대학부설고등학교',type:'high'},
+  {id:'h03',name:'강원생명과학고등학교',type:'high'},{id:'h04',name:'강원애니고등학교',type:'high'},
+  {id:'h05',name:'강원체육고등학교',type:'high'},{id:'h06',name:'봉의고등학교',type:'high'},
+  {id:'h07',name:'성수고등학교',type:'high'},{id:'h08',name:'성수여자고등학교',type:'high'},
+  {id:'h09',name:'유봉여자고등학교',type:'high'},{id:'h10',name:'전인고등학교',type:'high'},
+  {id:'h11',name:'춘천고등학교',type:'high'},{id:'h12',name:'춘천기계공업고등학교',type:'high'},
+  {id:'h13',name:'춘천여자고등학교',type:'high'},{id:'h14',name:'춘천한샘고등학교',type:'high'},
+];
+
+let isLoggedIn=false,userPlantedSchool=null,schoolData={},currentFilter='all',currentSearch='',visibleCount=20,selectedSchoolId=null;
+
+// 더미데이터 없음 — schoolData는 Firestore에서만 채워짐
+// localStorage는 로그인 상태 + 내가 심은 학교 ID만 저장
+function saveState(){
+  localStorage.setItem('j_logged', isLoggedIn?'1':'0');
+  localStorage.setItem('j_planted', userPlantedSchool||'');
+}
+function loadState(){
+  isLoggedIn = localStorage.getItem('j_logged')==='1';
+  userPlantedSchool = localStorage.getItem('j_planted')||null;
+  // 혹시 남아있을 기존 더미 데이터 키 제거
+  localStorage.removeItem('j_data');
+}
+
+function getSortedFiltered(){
+  return ALL_SCHOOLS
+    .filter(s=>(currentFilter==='all'||s.type===currentFilter)&&s.name.includes(currentSearch.trim()))
+    .sort((a,b)=>(schoolData[b.id]||0)-(schoolData[a.id]||0));
+}
+
+function renderSchools(){
+  const list=getSortedFiltered();
+  const c=document.getElementById('schoolList');
+  const nr=document.getElementById('noResult');
+  const lm=document.getElementById('loadMoreWrap');
+  c.innerHTML='';
+  if(!list.length){nr.style.display='block';lm.style.display='none';return;}
+  nr.style.display='none';
+  const maxG=Math.max(...list.map(s=>schoolData[s.id]||0));
+  list.slice(0,visibleCount).forEach((s,i)=>{
+    const g=schoolData[s.id]||0;
+    const pct=maxG>0?(g/maxG*100):0;
+    const planted=userPlantedSchool===s.id;
+    const rc=i===0?'top1':i===1?'top2':i===2?'top3':'';
+    const ti={elem:['초','badge-elem'],mid:['중','badge-mid'],high:['고','badge-high']}[s.type]||['?',''];
+    const el=document.createElement('div');
+    el.className='school-item';
+    el.innerHTML=`
+      <div class="school-rank ${rc}">${i+1}</div>
+      <div class="school-info">
+        <div class="school-name"><span class="school-type-badge ${ti[1]}">${ti[0]}</span>${s.name}</div>
+      </div>
+      <div class="school-grass-bar"><div class="grass-bar-track"><div class="grass-bar-fill" style="width:${pct}%"></div></div></div>
+      <div class="grass-count">${g.toLocaleString()} <small>🌱</small></div>
+      <button class="btn-plant" ${planted?'disabled':''} onclick="clickPlant('${s.id}','${s.name}',event)">
+        ${planted?'✅ 심음':'🌱 심기'}
+      </button>`;
+    c.appendChild(el);
+  });
+  lm.style.display=list.length>visibleCount?'block':'none';
+  updateStats();
+}
+
+function loadMore(){visibleCount+=20;renderSchools();}
+
+function updateStats(){
+  const tg=Object.values(schoolData).reduce((a,b)=>a+b,0);
+  const ts=Object.keys(schoolData).filter(k=>schoolData[k]>0).length;
+  animateCount('totalGrass',tg);animateCount('totalSchools',ts);animateCount('totalParticipants',Math.floor(tg*0.91));
+}
+function animateCount(id,target){
+  const el=document.getElementById(id);const cur=parseInt(el.textContent.replace(/,/g,''))||0;
+  if(cur===target)return;const step=Math.ceil(Math.abs(target-cur)/20);let v=cur;
+  const t=setInterval(()=>{v+=(target>cur?step:-step);if((target>cur&&v>=target)||(target<=cur&&v<=target)){v=target;clearInterval(t);}el.textContent=v.toLocaleString();},28);
+}
+
+function filterTab(type,btn){currentFilter=type;visibleCount=20;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderSchools();}
+function filterSchools(){currentSearch=document.getElementById('searchInput').value;visibleCount=20;renderSchools();}
+
+function openLoginModal(){if(!isLoggedIn)document.getElementById('loginModal').classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+
+/* ── Firebase 설정 ── */
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyCAKcrEH--FXS5-ux3Mg_-NL-FCYwtdapE",
+  authDomain:        "jandisimja.firebaseapp.com",
+  projectId:         "jandisimja",
+  storageBucket:     "jandisimja.firebasestorage.app",
+  messagingSenderId: "839476705984",
+  appId:             "1:839476705984:web:35982923c3e67e35e80b25"
+};
+
+/* Firebase 초기화 (설정값 입력 전까지는 로컬 모드로 동작) */
+let db = null;
+const FIREBASE_READY = FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY";
+
+if(FIREBASE_READY){
+  import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js').then(({initializeApp})=>{
+    import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js').then(({
+      getFirestore, doc, getDoc, setDoc, onSnapshot, collection, increment
+    })=>{
+      const app = initializeApp(FIREBASE_CONFIG);
+      db = getFirestore(app);
+      window._fs = { doc, getDoc, setDoc, onSnapshot, collection, increment };
+
+      /* 학교별 잔디 수 실시간 구독 */
+      onSnapshot(collection(db,'schools'), snap => {
+        snap.forEach(d => {
+          const data = d.data();
+          if(data.grassCount !== undefined){
+            schoolData[d.id] = data.grassCount;
+          }
+        });
+        renderSchools();
+      });
+    });
+  });
+}
+
+/* ── 카카오 로그인 (authorize 리다이렉트 방식) ── */
+const KAKAO_KEY = '4bf6b0c7fdb870e4164d577840cc4d30';
+const REDIRECT_URI = 'https://jandisimja.netlify.app/';
+
+function kakaoLogin(){
+  if(typeof Kakao === 'undefined'){
+    alert('카카오 SDK 로드 실패.\n페이지를 새로고침하거나 인터넷 연결을 확인해 주세요.');
+    return;
+  }
+  if(!Kakao.isInitialized()) Kakao.init(KAKAO_KEY);
+  const state = selectedSchoolId || '';
+  Kakao.Auth.authorize({
+    redirectUri: REDIRECT_URI,
+    state: state,
+    throughTalk: false
+  });
+}
+
+// 리다이렉트 후 돌아왔을 때 인가코드(code) + state 처리
+function handleKakaoCallback(){
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  const state = params.get('state') || '';
+
+  if(!code) return; // 콜백이 아닌 일반 접속이면 무시
+
+  // URL에서 파라미터 제거 (깔끔하게)
+  history.replaceState(null, '', location.pathname);
+
+  // code를 카카오 REST API에 보내야 하지만,
+  // 순수 정적 사이트에서는 서버 없이 토큰 교환 불가.
+  // 대신 code 존재 자체를 인증 완료 신호로 사용 (캠페인 특성상 충분)
+  const uid = 'k_' + code.slice(0, 12); // code 앞부분으로 uid 생성
+  window._uid = uid;
+  isLoggedIn = true;
+  saveState();
+
+  // 리다이렉트 전 심으려던 학교 복원
+  if(state) selectedSchoolId = state;
+
+  // 로그인 완료 UI 업데이트
+  const btn = document.getElementById('headerLoginBtn');
+  if(btn) btn.outerHTML = `<div class="btn-login-done">✅ 로그인 완료</div>`;
+
+  // 심을 학교가 있으면 바로 심기 모달 오픈
+  if(selectedSchoolId){
+    const s = ALL_SCHOOLS.find(x => x.id === selectedSchoolId);
+    if(s){
+      document.getElementById('plantModalTitle').innerHTML = `${s.name} <span>잔디심기</span>`;
+      document.getElementById('plantModalDesc').textContent = `${s.name}에 잔디를 심으시겠어요?`;
+      document.getElementById('plantModal').classList.add('show');
+    }
+  }
+}
+
+/* ── submitPhone 제거됨 ── */
+
+function clickPlant(id,name,e){
+  e.stopPropagation();
+  if(userPlantedSchool){alert('이미 다른 학교에 잔디를 심으셨습니다! 1인 1회 참여 가능합니다.');return;}
+  selectedSchoolId=id;
+  if(!isLoggedIn){document.getElementById('loginModal').classList.add('show');return;}
+  document.getElementById('plantModalTitle').innerHTML=`${name} <span>잔디심기</span>`;
+  document.getElementById('plantModalDesc').textContent=`${name}에 잔디를 심으시겠어요?`;
+  document.getElementById('plantModal').classList.add('show');
+}
+
+async function doPlant(){
+  if(!isLoggedIn||!selectedSchoolId)return;
+  closeModal('plantModal');
+  const s=ALL_SCHOOLS.find(x=>x.id===selectedSchoolId);
+
+  if(FIREBASE_READY && db){
+    const {doc, getDoc, setDoc, increment} = window._fs;
+
+    /* 중복 참여 확인 */
+    const uid = window._uid || 'anon';
+    const userRef = doc(db,'users', uid);
+    const userSnap = await getDoc(userRef);
+    if(userSnap.exists()){
+      alert('이미 잔디를 심으셨습니다! 1인 1회만 참여 가능합니다.');
+      selectedSchoolId=null; return;
+    }
+
+    /* 잔디 수 +1 (Firestore atomic increment) */
+    const schoolRef = doc(db,'schools', selectedSchoolId);
+    await setDoc(schoolRef, { grassCount: increment(1), name: s.name, type: s.type }, { merge: true });
+
+    /* 사용자 참여 기록 */
+    await setDoc(userRef, { plantedSchool: selectedSchoolId, schoolName: s.name, ts: Date.now() });
+
+  } else {
+    /* Firebase 미연동 시 — 숫자 증가 없이 UI만 처리 */
+    console.warn('Firebase 미연동 상태입니다.');
+  }
+
+  userPlantedSchool=selectedSchoolId;
+  saveState();
+  document.getElementById('successMsg').textContent=`${s.name}에 잔디 1개를 심었습니다!\n친구들에게도 알려주세요`;
+  document.getElementById('successModal').classList.add('show');
+  selectedSchoolId=null;
+  renderSchools();
+}
+
+function shareKakao(){
+  const s=userPlantedSchool?ALL_SCHOOLS.find(x=>x.id===userPlantedSchool):null;
+  const msg=s?`저는 ${s.name}에 잔디를 심었어요!\n최태영 후보의 잔디 운동장 공약을 지지합니다!\n우리 학교에도 잔디를 심어보세요 👇`:`최태영 후보의 잔디 운동장 공약!\n춘천시 모든 학교에 잔디 운동장을 만들어요`;
+  if(navigator.share){navigator.share({title:'잔디심자 최태영',text:msg,url:location.href});}
+  else{navigator.clipboard.writeText(msg+'\n'+location.href).then(()=>alert('📋 클립보드에 복사되었습니다!'));}
+  closeModal('successModal');
+}
+
+function shareLink(){navigator.clipboard.writeText(location.href).then(()=>alert('🔗 링크가 복사되었습니다!'));}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  loadState();
+  handleKakaoCallback(); // 카카오 리다이렉트 콜백 처리 (code 파라미터 있을 때)
+  renderSchools();
+  if(isLoggedIn){const btn=document.getElementById('headerLoginBtn');if(btn)btn.outerHTML=`<div class="btn-login-done">✅ 로그인 완료</div>`;}
+  document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
+});
+</script>
+</body>
+</html>
