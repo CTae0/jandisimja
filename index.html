@@ -645,16 +645,18 @@ const ALL_SCHOOLS = [
 let isLoggedIn=false,userPlantedSchool=null,schoolData={},currentFilter='all',currentSearch='',visibleCount=20,selectedSchoolId=null;
 
 // 더미데이터 없음 — schoolData는 Firestore에서만 채워짐
-// localStorage는 로그인 상태 + 내가 심은 학교 ID만 저장
+// sessionStorage 사용 — 브라우저/탭 닫으면 자동 초기화
 function saveState(){
-  localStorage.setItem('j_logged', isLoggedIn?'1':'0');
-  localStorage.setItem('j_planted', userPlantedSchool||'');
+  sessionStorage.setItem('j_logged', isLoggedIn?'1':'0');
+  sessionStorage.setItem('j_planted', userPlantedSchool||'');
 }
 function loadState(){
-  isLoggedIn = localStorage.getItem('j_logged')==='1';
-  userPlantedSchool = localStorage.getItem('j_planted')||null;
-  // 혹시 남아있을 기존 더미 데이터 키 제거
+  isLoggedIn = sessionStorage.getItem('j_logged')==='1';
+  userPlantedSchool = sessionStorage.getItem('j_planted')||null;
+  // 혹시 남아있을 기존 localStorage 키 제거
   localStorage.removeItem('j_data');
+  localStorage.removeItem('j_logged');
+  localStorage.removeItem('j_planted');
 }
 
 function getSortedFiltered(){
