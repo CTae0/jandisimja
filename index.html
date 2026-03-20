@@ -825,7 +825,13 @@ async function handleKakaoCallback(){
     if(selectedSchoolId){
       const s = ALL_SCHOOLS.find(x => x.id === selectedSchoolId);
       if(s){
-        document.getElementById('plantModalTitle').innerHTML = `${s.name} <span>잔디심기</span>`;
+        const titleEl = document.getElementById('plantModalTitle');
+        titleEl.textContent = '';
+        const nameNode = document.createTextNode(s.name + ' ');
+        const spanEl = document.createElement('span');
+        spanEl.textContent = '잔디심기';
+        titleEl.appendChild(nameNode);
+        titleEl.appendChild(spanEl);
         document.getElementById('plantModalDesc').textContent = `${s.name}에 잔디를 심으시겠어요?`;
         document.getElementById('plantModal').classList.add('show');
       }
@@ -845,7 +851,11 @@ function clickPlant(id,name,e){
   if(userPlantedSchool){alert('이미 다른 학교에 잔디를 심으셨습니다! 1인 1회 참여 가능합니다.');return;}
   selectedSchoolId=id;
   if(!isLoggedIn){document.getElementById('loginModal').classList.add('show');return;}
-  document.getElementById('plantModalTitle').innerHTML=`${name} <span>잔디심기</span>`;
+  const ptitle = document.getElementById('plantModalTitle');
+  ptitle.textContent = '';
+  ptitle.appendChild(document.createTextNode(name + ' '));
+  const pspan = document.createElement('span'); pspan.textContent = '잔디심기';
+  ptitle.appendChild(pspan);
   document.getElementById('plantModalDesc').textContent=`${name}에 잔디를 심으시겠어요?`;
   document.getElementById('plantModal').classList.add('show');
 }
@@ -854,29 +864,32 @@ async function doPlant(){
   if(!isLoggedIn||!selectedSchoolId)return;
   closeModal('plantModal');
   const s=ALL_SCHOOLS.find(x=>x.id===selectedSchoolId);
+  const uid = window._uid;
 
-  if(FIREBASE_READY && db){
-    const {doc, getDoc, setDoc, increment} = window._fs;
+  if(!uid){
+    alert('로그인 정보가 없습니다. 다시 로그인해 주세요.');
+    selectedSchoolId=null; return;
+  }
 
-    /* 중복 참여 확인 */
-    const uid = window._uid || 'anon';
-    const userRef = doc(db,'users', uid);
-    const userSnap = await getDoc(userRef);
-    if(userSnap.exists()){
-      alert('이미 잔디를 심으셨습니다! 1인 1회만 참여 가능합니다.');
-      selectedSchoolId=null; return;
+  try {
+    const response = await fetch('/api/plant', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ uid, schoolId: selectedSchoolId })
+    });
+
+    if(!response.ok){
+      const err = await response.json();
+      if(err.error === 'ALREADY_PLANTED'){
+        alert('이미 잔디를 심으셨습니다! 1인 1회만 참여 가능합니다.');
+        selectedSchoolId=null; return;
+      }
+      throw new Error(err.error || '서버 오류');
     }
 
-    /* 잔디 수 +1 (Firestore atomic increment) */
-    const schoolRef = doc(db,'schools', selectedSchoolId);
-    await setDoc(schoolRef, { grassCount: increment(1), name: s.name, type: s.type }, { merge: true });
-
-    /* 사용자 참여 기록 */
-    await setDoc(userRef, { plantedSchool: selectedSchoolId, schoolName: s.name, ts: Date.now() });
-
-  } else {
-    /* Firebase 미연동 시 — 숫자 증가 없이 UI만 처리 */
-    console.warn('Firebase 미연동 상태입니다.');
+  } catch(err) {
+    alert('잔디 심기 중 오류가 발생했습니다.\n다시 시도해 주세요.\n\n오류: ' + err.message);
+    selectedSchoolId=null; return;
   }
 
   userPlantedSchool=selectedSchoolId;
