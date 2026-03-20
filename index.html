@@ -771,39 +771,59 @@ function kakaoLogin(){
 }
 
 // 리다이렉트 후 돌아왔을 때 인가코드(code) + state 처리
-function handleKakaoCallback(){
+async function handleKakaoCallback(){
   const params = new URLSearchParams(location.search);
   const code = params.get('code');
   const state = params.get('state') || '';
 
-  if(!code) return; // 콜백이 아닌 일반 접속이면 무시
+  if(!code) return; // 일반 접속이면 무시
 
-  // URL에서 파라미터 제거 (깔끔하게)
+  // URL 파라미터 즉시 제거 (깔끔하게)
   history.replaceState(null, '', location.pathname);
 
-  // code를 카카오 REST API에 보내야 하지만,
-  // 순수 정적 사이트에서는 서버 없이 토큰 교환 불가.
-  // 대신 code 존재 자체를 인증 완료 신호로 사용 (캠페인 특성상 충분)
-  const uid = 'k_' + code.slice(0, 12); // code 앞부분으로 uid 생성
-  window._uid = uid;
-  isLoggedIn = true;
-  saveState();
-
-  // 리다이렉트 전 심으려던 학교 복원
-  if(state) selectedSchoolId = state;
-
-  // 로그인 완료 UI 업데이트
+  // 로딩 표시
   const btn = document.getElementById('headerLoginBtn');
-  if(btn) btn.outerHTML = `<div class="btn-login-done">✅ 로그인 완료</div>`;
+  if(btn) btn.textContent = '⏳ 인증 중...';
 
-  // 심을 학교가 있으면 바로 심기 모달 오픈
-  if(selectedSchoolId){
-    const s = ALL_SCHOOLS.find(x => x.id === selectedSchoolId);
-    if(s){
-      document.getElementById('plantModalTitle').innerHTML = `${s.name} <span>잔디심기</span>`;
-      document.getElementById('plantModalDesc').textContent = `${s.name}에 잔디를 심으시겠어요?`;
-      document.getElementById('plantModal').classList.add('show');
+  try {
+    // Vercel Function 호출 — 인가코드를 실제 카카오 회원번호로 교환
+    const response = await fetch('/api/kakao-auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code })
+    });
+
+    if(!response.ok){
+      const err = await response.json();
+      throw new Error(err.error || '인증 서버 오류');
     }
+
+    const { kakaoId } = await response.json();
+
+    // 실제 카카오 회원번호를 uid로 사용 → 기기/브라우저 무관하게 동일
+    window._uid = 'kakao_' + kakaoId;
+    isLoggedIn = true;
+    saveState();
+
+    // 로그인 완료 UI
+    if(btn) btn.outerHTML = `<div class="btn-login-done">✅ 로그인 완료</div>`;
+
+    // 리다이렉트 전 심으려던 학교 복원
+    if(state) selectedSchoolId = state;
+
+    if(selectedSchoolId){
+      const s = ALL_SCHOOLS.find(x => x.id === selectedSchoolId);
+      if(s){
+        document.getElementById('plantModalTitle').innerHTML = `${s.name} <span>잔디심기</span>`;
+        document.getElementById('plantModalDesc').textContent = `${s.name}에 잔디를 심으시겠어요?`;
+        document.getElementById('plantModal').classList.add('show');
+      }
+    }
+
+  } catch(err) {
+    console.error('카카오 인증 오류:', err);
+    if(btn) btn.textContent = '💬 카카오 로그인';
+    alert('로그인 처리 중 오류가 발생했습니다.\n다시 시도해 주세요.\n\n오류: ' + err.message);
   }
 }
 
