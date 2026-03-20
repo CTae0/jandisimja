@@ -453,10 +453,6 @@
     <span class="stat-num" id="totalSchools">0</span>
     <span class="stat-label">참여 학교 수</span>
   </div>
-  <div class="stat-item">
-    <span class="stat-num" id="totalParticipants">0</span>
-    <span class="stat-label">참여 인원</span>
-  </div>
 </div>
 
 <section class="pledge-section">
@@ -703,10 +699,8 @@ function loadMore(){visibleCount+=20;renderSchools();}
 function updateStats(){
   const tg=Object.values(schoolData).reduce((a,b)=>a+b,0);
   const ts=Object.keys(schoolData).filter(k=>schoolData[k]>0).length;
-  const participants = window._participantCount ?? 0;
   animateCount('totalGrass',tg);
   animateCount('totalSchools',ts);
-  animateCount('totalParticipants',participants);
 }
 function animateCount(id,target){
   const el=document.getElementById(id);const cur=parseInt(el.textContent.replace(/,/g,''))||0;
@@ -754,11 +748,6 @@ if(FIREBASE_READY){
         renderSchools();
       });
 
-      /* 실제 참여 인원 실시간 구독 (users 컬렉션 문서 수 = 실제 참여자 수) */
-      onSnapshot(collection(db,'users'), snap => {
-        window._participantCount = snap.size;
-        updateStats();
-      });
     });
   });
 }
